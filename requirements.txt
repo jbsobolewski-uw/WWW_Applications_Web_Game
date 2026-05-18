@@ -1,0 +1,9 @@
+django
+django-debug-toolbar
+django-allauth
+requests
+dotenv
+uuid
+djangorestframework
+drf-spectacular
+djangorestframework-stubs
