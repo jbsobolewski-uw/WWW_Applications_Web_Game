@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} — Sudoku</title>
+    <link rel="stylesheet" href="{% static 'pages/main.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+<header>
+    <nav>
+        <a href="{% url 'homepage' %}">Home</a>
+
+        {% if user.is_authenticated %}
+            {% if user.is_staff %}
+                <a href="{% url 'admin:index' %}">Admin panel</a>
+            {% endif %}
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'sudoku' %}">Play</a>
+
+            <form method="POST" action="{% url 'logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="nav-button">Logout</button>
+            </form>
+
+        {% else %}
+            <a href="{% url 'login' %}">Sign in</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </nav>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>{% block footer_text %}© 2026 AWWW Sudoku{% endblock %}</p>
+</footer>
+</body>
+</html>
