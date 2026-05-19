@@ -1,5 +1,7 @@
 from django.contrib import admin
+
 from .models import GameRecord
+
 
 @admin.register(GameRecord)
 class GameRecordAdmin(admin.ModelAdmin):
