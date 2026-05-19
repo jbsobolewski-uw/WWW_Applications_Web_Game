@@ -17,16 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-import accounts.urls
-import game.urls
-import pages.urls
 from web_game.settings import DEBUG
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(pages.urls)),
-    path('accounts/', include(accounts.urls)),
-    path('game/', include(game.urls)),
+    path('', include('pages.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('game/', include('game.urls')),
     path('leaderboards/', include('leaderboards.urls')),
 ]
 
