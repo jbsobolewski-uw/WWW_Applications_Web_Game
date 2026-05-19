@@ -6,7 +6,7 @@
   "scripts": {
     "check": "tsc --noEmit",
     "build": "npm run check && tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --noEmit --watch"
   },
   "devDependencies": {
     "typescript": "^5.0.0"

@@ -18,8 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 import accounts.urls
-import pages.urls
 import game.urls
+import pages.urls
 from web_game.settings import DEBUG
 
 urlpatterns = [
