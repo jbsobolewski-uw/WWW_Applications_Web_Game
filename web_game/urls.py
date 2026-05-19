@@ -16,14 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings
+
+import accounts.urls
+import pages.urls
+import sudoku.urls
+from web_game.settings import DEBUG
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include(pages.urls)),
+    path('accounts/', include(accounts.urls)),
+    path('sudoku/', include(sudoku.urls)),
 ]
 
-if settings.DEBUG:
+if DEBUG:
     import debug_toolbar
+
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
     ]
