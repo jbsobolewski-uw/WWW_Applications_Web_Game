@@ -1,4 +1,4 @@
-# sudoku/views.py
+# game/views.py
 
 from django.shortcuts import render
 

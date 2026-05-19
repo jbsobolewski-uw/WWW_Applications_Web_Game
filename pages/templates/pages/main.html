@@ -18,7 +18,7 @@
                 <a href="{% url 'admin:index' %}">Admin panel</a>
             {% endif %}
             <a href="{% url 'profile' %}">Profile</a>
-            <a href="{% url 'sudoku' %}">Play</a>
+            <a href="{% url 'game' %}">Play</a>
 
             <form method="POST" action="{% url 'logout' %}" class="logout-form">
                 {% csrf_token %}
@@ -37,7 +37,7 @@
 </main>
 
 <footer>
-    <p>{% block footer_text %}© 2026 AWWW Sudoku{% endblock %}</p>
+    <p>{% block footer_text %}© 2026 AWWW{% endblock %}</p>
 </footer>
 </body>
 </html>

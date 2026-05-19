@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'accounts',
     'pages',
-    'sudoku',
+    'game',
 ]
 
 MIDDLEWARE = [

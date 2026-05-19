@@ -19,14 +19,14 @@ from django.urls import path, include
 
 import accounts.urls
 import pages.urls
-import sudoku.urls
+import game.urls
 from web_game.settings import DEBUG
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(pages.urls)),
     path('accounts/', include(accounts.urls)),
-    path('sudoku/', include(sudoku.urls)),
+    path('game/', include(game.urls)),
 ]
 
 if DEBUG:
