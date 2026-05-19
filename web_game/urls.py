@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include(pages.urls)),
     path('accounts/', include(accounts.urls)),
     path('game/', include(game.urls)),
+    path('leaderboards/', include('leaderboards.urls')),
 ]
 
 if DEBUG:
