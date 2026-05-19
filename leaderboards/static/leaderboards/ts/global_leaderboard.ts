@@ -18,7 +18,11 @@ async function loadGlobalLeaderboard(gameSlug: string, difficulty: number, conta
     if (!data || !container) return;
 
     if (data.leaderboard.length === 0) {
-        container.innerHTML = "<p>No records yet. Be the first to win!</p>";
+        container.innerHTML = `
+                No records yet for Level ${difficulty}.
+                Be the first to win! 🚀
+                <a href="/game/?difficulty=${difficulty}">Play now</a>
+        `;
         return;
     }
 
