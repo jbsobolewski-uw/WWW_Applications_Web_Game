@@ -1,0 +1,14 @@
+{
+  "name": "django-hex-minesweeper-ts",
+  "version": "1.0.0",
+  "description": "TypeScript compiler pipeline for Django Leaderboards App",
+  "main": "index.js",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "npm run check && tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

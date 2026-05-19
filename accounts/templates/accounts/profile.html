@@ -1,10 +1,24 @@
 {% extends 'pages/main.html' %}
+{% load static %}
 
-{% block extra_head %}{% endblock %}
+{% block extra_head %}
+    <script src="{% static 'leaderboards/js/personal_records.js' %}" defer></script>
+{% endblock %}
+
 {% block title %}Profile{% endblock %}
 
 {% block content %}
     <h1>Hello {{ user.username }}!</h1>
+
+    <div class="personal-records-wrapper">
+        <h3>Your Personal Records</h3>
+        <div id="personal-board-container"></div>
+    </div>
+
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Args: (game_slug, container_id)
+            window.loadPersonalRecords('hex_minesweeper', 'personal-board-container');
+        });
     </script>
 {% endblock %}

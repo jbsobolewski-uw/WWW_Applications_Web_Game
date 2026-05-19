@@ -1,6 +1,7 @@
-from django.http import JsonResponse
-from django.db.models import Min
 from django.contrib.auth.decorators import login_required
+from django.db.models import Min
+from django.http import JsonResponse
+
 from .models import GameRecord
 
 
