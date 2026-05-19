@@ -1,0 +1,43 @@
+{% extends 'main.html' %}
+
+{% block title %}Rulebook{% endblock %}
+
+{% block content %}
+    <div class="game-rules-container">
+        <h1>How to Play Hex Sweeper</h1>
+        <p class="subtitle">Forget what you know about corners. This is classic mine-clearing logic, reimagined on a
+            hexagonal grid.</p>
+
+        <div class="rules-card">
+            <h3>Core Mechanics</h3>
+            <ul>
+                <li><strong>The Goal:</strong> Reveal every safe tile on the board without detonating a single mine.
+                </li>
+                <li><strong>The Numbers:</strong> A revealed number tells you exactly how many mines are hidden in the
+                    <strong>6 directly adjacent</strong> hexagons.
+                </li>
+                <li><strong>Chain Reactions:</strong> If you click a tile with zero adjacent mines, the board will
+                    automatically reveal all neighboring safe tiles.
+                </li>
+            </ul>
+
+            <h3>Controls</h3>
+            <ul>
+                <li><strong>Reveal Tile:</strong> Left-click (or tap on mobile).</li>
+                <li><strong>Place Flag:</strong> Right-click (or long-press on mobile) to mark a suspected mine. This
+                    locks the tile so you don't accidentally click it.
+                </li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 Pro Tip:</strong> Don't sweat your first move! Your very first click is procedurally
+                guaranteed to be safe. Speed matters, so clear the board as fast as you can to climb the global
+                leaderboard!
+            </div>
+        </div>
+
+        <div class="action-buttons" style="margin-top: 30px;">
+            <a href="{% url 'game' %}" class="btn btn-primary">Play Now</a>
+        </div>
+    </div>
+{% endblock %}
