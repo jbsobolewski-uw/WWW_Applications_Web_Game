@@ -1,12 +1,12 @@
 {
-  "name": "django-hex-minesweeper-ts",
+  "name": "hex-minesweeper",
   "version": "1.0.0",
-  "description": "TypeScript compiler pipeline for Django Hex-Sweeper App",
-  "main": "index.js",
+  "description": "TypeScript compiler pipeline for Hex-Sweeper App",
   "scripts": {
     "check": "tsc --noEmit",
-    "build": "npm run check && tsc  --build",
-    "watch": "npm run check && tsc  --watch"
+    "build": "tsc --build",
+    "build:fresh": "tsc --build --clean && tsc --build",
+    "watch": "tsc --watch"
   },
   "devDependencies": {
     "typescript": "^5.0.0"

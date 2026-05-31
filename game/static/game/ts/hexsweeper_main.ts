@@ -15,6 +15,7 @@ import {
     hexCorners,
     canvasSizeForRings,
 } from './hexsweeper_utils.js';
+import { submitRecord } from './stats_api.js';
 
 // ---------------------------------------------------------------------------
 // HexMinesweeper — game logic
@@ -30,7 +31,7 @@ class HexMinesweeper {
     won: boolean = false;
     started: boolean = false;
     flagCount: number = 0;
-    revealedCount: number = 0;       // counts only safe cells revealed
+    revealedCount: number = 0;
     elapsed: number = 0;
 
     private startTime: number = 0;
@@ -55,17 +56,13 @@ class HexMinesweeper {
         }
     }
 
-    // ---- Mine placement (deferred to first click) --------------------------
-
     private _placeMines(safeQ: number, safeR: number): void {
-        // Build exclusion zone: clicked cell + all its neighbours
         const safeSet = new Set<string>();
         safeSet.add(hexKey(safeQ, safeR));
         for (const n of hexNeighbors(safeQ, safeR)) {
             safeSet.add(hexKey(n.q, n.r));
         }
 
-        // Shuffle eligible candidates, take first N as mines
         const candidates = [...this.cells.keys()].filter(k => !safeSet.has(k));
         for (let i = candidates.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -78,7 +75,6 @@ class HexMinesweeper {
             this.cells.get(k)!.mine = true;
         }
 
-        // Compute adjacency for every non-mine cell
         for (const [, cell] of this.cells) {
             if (cell.mine) continue;
             let count = 0;
@@ -89,8 +85,6 @@ class HexMinesweeper {
             cell.adjacentMines = count;
         }
     }
-
-    // ---- Public API --------------------------------------------------------
 
     reveal(q: number, r: number): void {
         if (this.gameOver || this.won) return;
@@ -121,8 +115,6 @@ class HexMinesweeper {
         return Math.floor((Date.now() - this.startTime) / 1000);
     }
 
-    // ---- Internals ---------------------------------------------------------
-
     private _floodReveal(q: number, r: number): void {
         const stack: AxialCoord[] = [{ q, r }];
 
@@ -135,14 +127,12 @@ class HexMinesweeper {
             cell.revealed = true;
 
             if (cell.mine) {
-                // Hit a mine — game over; do NOT count it toward revealedCount
                 this.gameOver = true;
                 this.elapsed = Math.floor((Date.now() - this.startTime) / 1000);
                 this._exposeAllMines();
                 return;
             }
 
-            // Only safe cells contribute to the win counter
             this.revealedCount++;
 
             if (cell.adjacentMines === 0) {
@@ -162,8 +152,6 @@ class HexMinesweeper {
     }
 
     private _checkWin(): void {
-        // Win condition: every safe cell has been revealed
-        // Flagging is not required; mines never count toward revealedCount
         if (this.revealedCount >= this.totalSafe) {
             this.won = true;
             this.elapsed = Math.floor((Date.now() - this.startTime) / 1000);
@@ -252,8 +240,6 @@ class HexRenderer {
         return pixelToHex(px, py, this.size, this.cx, this.cy);
     }
 
-    // ---- Private -----------------------------------------------------------
-
     private _drawHex(q: number, r: number, fill: string, stroke: string, strokeWidth: number): void {
         const center: Point = hexToPixel(q, r, this.size, this.cx, this.cy);
         const corners = hexCorners(center.x, center.y, this.size - 1.5);
@@ -300,16 +286,19 @@ class GameController {
     private renderer!: HexRenderer;
     private timerHandle: ReturnType<typeof setInterval> | null = null;
 
+    // Track whether we have already submitted the record for the current game
+    // so a re-render triggered after end state doesn't double-submit.
+    private _recordSubmitted: boolean = false;
+
     constructor() {
-        this.canvas     = this._getEl<HTMLCanvasElement>('hex-canvas');
-        this.diffSelect = this._getEl<HTMLSelectElement>('game-difficulty');
-        this.newGameBtn = this._getEl<HTMLButtonElement>('new-game-btn');
-        this.statusEl   = this._getEl<HTMLElement>('game-status');
+        this.canvas      = this._getEl<HTMLCanvasElement>('hex-canvas');
+        this.diffSelect  = this._getEl<HTMLSelectElement>('game-difficulty');
+        this.newGameBtn  = this._getEl<HTMLButtonElement>('new-game-btn');
+        this.statusEl    = this._getEl<HTMLElement>('game-status');
         this.statMines   = this._getEl<HTMLElement>('stat-mines');
         this.statFlagged = this._getEl<HTMLElement>('stat-flagged');
         this.statTime    = this._getEl<HTMLElement>('stat-time');
 
-        // Sync difficulty from URL query param
         const params = new URLSearchParams(window.location.search);
         const urlDiff = parseInt(params.get('difficulty') ?? '', 10);
         if (urlDiff >= 1 && urlDiff <= 10) {
@@ -345,6 +334,7 @@ class GameController {
         const diff = parseInt(this.diffSelect.value, 10) || 5;
         this.game = new HexMinesweeper(diff);
         this.renderer = new HexRenderer(this.canvas, this.game);
+        this._recordSubmitted = false;
         this.renderer.render();
         this._updateStats();
         this.statusEl.textContent = '';
@@ -358,8 +348,6 @@ class GameController {
             }
         }, 500);
     }
-
-    // ---- Event handlers ----------------------------------------------------
 
     private _onClick(e: MouseEvent): void {
         const { x, y } = this._canvasPos(e);
@@ -391,8 +379,6 @@ class GameController {
         }
     }
 
-    // ---- Helpers -----------------------------------------------------------
-
     private _canvasPos(e: MouseEvent): Point {
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / rect.width;
@@ -410,12 +396,25 @@ class GameController {
     }
 
     private _checkEndState(): void {
+        if (!this.game.won && !this.game.gameOver) return;
+
         if (this.game.won) {
             this.statusEl.textContent = `Cleared in ${this.game.elapsed}s`;
             this.statusEl.className = 'won';
-        } else if (this.game.gameOver) {
+        } else {
             this.statusEl.textContent = 'Game over.';
             this.statusEl.className = 'lost';
+        }
+
+        // Submit exactly once per finished game, only if the game was actually
+        // started (i.e. the player made at least one move).
+        if (this.game.started && !this._recordSubmitted) {
+            this._recordSubmitted = true;
+            void submitRecord({
+                difficulty:   parseInt(this.diffSelect.value, 10) || 5,
+                time_seconds: this.game.elapsed,
+                is_win:       this.game.won,
+            });
         }
     }
 

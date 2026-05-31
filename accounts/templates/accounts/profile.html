@@ -11,13 +11,85 @@
 {% block content %}
     <h1>Hello {{ user.username }}!</h1>
 
+    <div class="profile-stats">
+        <div class="profile-stat-card">
+            <span class="profile-stat-label">Games Played</span>
+            <span class="profile-stat-value" id="stat-total-played">—</span>
+        </div>
+        <div class="profile-stat-card">
+            <span class="profile-stat-label">Wins</span>
+            <span class="profile-stat-value" id="stat-total-wins">—</span>
+        </div>
+        <div class="profile-stat-card">
+            <span class="profile-stat-label">Win Rate</span>
+            <span class="profile-stat-value" id="stat-win-rate">—</span>
+        </div>
+    </div>
+
     <div class="personal-records-wrapper">
-        <h3>Your Personal Records</h3>
+        <h3>Personal Records</h3>
         <div id="personal-board-container"></div>
     </div>
 
+    <style>
+        .profile-stats {
+            display: flex;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            flex-wrap: wrap;
+        }
+
+        .profile-stat-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--space-md) var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+            min-width: 9rem;
+        }
+
+        .profile-stat-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--primary);
+        }
+
+        .profile-stat-value {
+            font-family: var(--font-mono);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+    </style>
+
     <script type="module">
-        // Args: (game_slug, container_id)
+        // Load personal best records table
         window.loadPersonalRecords('hex_minesweeper', 'personal-board-container');
+
+        // Load aggregate stats
+        async function loadStats() {
+            try {
+                const res = await fetch('/game/api/stats/');
+                if (!res.ok) return;
+                const data = await res.json();
+
+                document.getElementById('stat-total-played').textContent = data.total_played ?? '0';
+                document.getElementById('stat-total-wins').textContent   = data.total_wins   ?? '0';
+
+                const rate = data.total_played > 0
+                    ? Math.round((data.total_wins / data.total_played) * 100) + '%'
+                    : '—';
+                document.getElementById('stat-win-rate').textContent = rate;
+            } catch (_) {
+                // Non-critical — leave as dashes
+            }
+        }
+
+        loadStats();
     </script>
 {% endblock %}
