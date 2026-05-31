@@ -10,7 +10,7 @@
 </head>
 <body>
 <header>
-    <nav>
+    <nav class="site-nav">
         <a href="{% url 'homepage' %}">Home</a>
 
         {% if user.is_authenticated %}
@@ -32,12 +32,12 @@
     </nav>
 </header>
 
-<main>
+<main class="container">
     {% block content %}{% endblock %}
 </main>
 
-<footer>
-    <p>{% block footer_text %}© 2026 AWWW{% endblock %}</p>
+<footer class="site-footer">
+    <p>&copy; 2026 Hex Sweeper. All rights reserved.</p>
 </footer>
 </body>
 </html>

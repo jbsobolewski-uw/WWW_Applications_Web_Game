@@ -1,0 +1,55 @@
+/* style.css */
+
+:root {
+    /* Color Palette */
+    --primary: #92b775;
+    --secondary: #133215;
+    --accent: #f3e8d3;
+
+    /* Functional Inversions */
+    --bg-main: var(--accent);
+    --bg-surface: #ffffff;
+    --bg-dark: var(--secondary);
+
+    --text-main: var(--secondary);
+    --text-light: var(--primary);
+    --border-color: #d1c7b2;
+
+    /* Typography */
+    --font-main: "Inter", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+
+    /* Spacing & Sizing Scale */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --max-width: 75rem;
+
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --transition-fast: 0.2s ease;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 100%;
+    height: 100%;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-main);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}

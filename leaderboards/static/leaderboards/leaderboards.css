@@ -1,44 +1,90 @@
-/* Leaderboard Header & Dropdown */
+/* leaderboards.css */
+@import url("pages/static/pages/main.css");
+
 .leaderboard-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 600px;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+    width: 66.67%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
 }
 
 .difficulty-selector {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.difficulty-selector label {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
 }
 
 .difficulty-selector select {
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    background-color: #fff;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: var(--space-lg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23133215'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
 }
 
-/* Empty State Message */
+.difficulty-selector select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(146, 183, 117, 0.2);
+}
+
+/* Empty State */
 .empty-leaderboard {
     text-align: center;
-    padding: 2rem 0;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    margin-top: 1rem;
+    padding: var(--space-xl) 0;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    width: 66.67%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: var(--space-md);
+    font-family: var(--font-main);
+    color: var(--text-main);
 }
 
 .play-now-link {
     display: inline-block;
-    margin-top: 0.5rem;
-    font-weight: bold;
-    color: #007bff;
+    margin-top: var(--space-sm);
+    font-weight: 600;
+    color: var(--primary);
     text-decoration: none;
+    border: none;
+    transition: color var(--transition-fast);
 }
 
 .play-now-link:hover {
-    color: #0056b3;
-    text-decoration: underline;
+    color: var(--secondary);
+    background: none;
+}
+
+/* Leaderboard wrapper aligns the table container */
+.leaderboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }

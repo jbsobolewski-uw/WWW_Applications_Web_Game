@@ -6,28 +6,21 @@
     <link rel="stylesheet" href="{% static 'leaderboards/leaderboards.css' %}">
 {% endblock %}
 
-{% block title %}Home page{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
     <h1>Welcome to Hex Sweeper!</h1>
 
-    <a href="{% url 'rules' %}">Read the Rulebook</a>
+    <p><a href="{% url 'rules' %}">Read the Rulebook</a></p>
 
     <div class="leaderboard-wrapper">
         <div class="leaderboard-header">
             <div class="difficulty-selector">
-                <label for="difficulty-select"><strong>Global Top 10: </strong></label>
+                <label for="difficulty-select">Global Top 10:</label>
                 <select id="difficulty-select">
-                    <option value="1">Level 1</option>
-                    <option value="2">Level 2</option>
-                    <option value="3">Level 3</option>
-                    <option value="4">Level 4</option>
-                    <option value="5">Level 5</option>
-                    <option value="6">Level 6</option>
-                    <option value="7">Level 7</option>
-                    <option value="8">Level 8</option>
-                    <option value="9">Level 9</option>
-                    <option value="10">Level 10</option>
+                    {% for i in "1234567890" %}
+                    <option value="{{ forloop.counter }}">Level {{ forloop.counter }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -37,20 +30,14 @@
 
     <script type="module">
         const selectElement = document.getElementById('difficulty-select');
-        const titleElement = document.getElementById('leaderboard-title');
         const containerId = 'global-board-container';
         const gameSlug = 'hex_minesweeper';
 
-        // 1. Fetch saved difficulty from localStorage, or default to '5'
         const savedDifficulty = localStorage.getItem('hex_sweeper_difficulty') || '5';
-
-        // 2. Set the dropdown and header to match the saved state
         selectElement.value = savedDifficulty;
 
-        // 3. Load the initial leaderboard
         window.loadGlobalLeaderboard(gameSlug, parseInt(savedDifficulty), containerId);
 
-        // 4. Listen for user changing the dropdown
         selectElement.addEventListener('change', (e) => {
             const newDifficulty = e.target.value;
             localStorage.setItem('hex_sweeper_difficulty', newDifficulty);

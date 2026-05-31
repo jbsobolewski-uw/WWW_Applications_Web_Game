@@ -4,10 +4,12 @@
 
 {% block content %}
     <h1>Login</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign in</button>
-    </form>
-    <p>No account? <a href="{% url 'register' %}">Register</a></p>
+    <div class="card" style="max-width: 28rem;">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign in</button>
+        </form>
+        <p>No account? <a href="{% url 'register' %}">Register</a></p>
+    </div>
 {% endblock %}

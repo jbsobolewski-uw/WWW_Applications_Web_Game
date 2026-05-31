@@ -1,16 +1,316 @@
-@import "style.css";
+/* main.css */
+@import url("./style.css");
+
+/* ==========================================================================
+   Core HTML Elements & Inline Links
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--secondary);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.35rem; }
+
+.container, div p {
+    margin-bottom: var(--space-md);
+    font-size: 1rem;
+}
+
+/* Links inside general text paragraphs */
+.container, div p a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    transition: color var(--transition-fast);
+}
+
+.container, div p a:hover {
+    color: var(--secondary);
+}
+
+/* No visited state change */
+.container, div p a:visited {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+
+/* ==========================================================================
+   Navigation Component
+   ========================================================================== */
+
+.site-nav {
+    background-color: var(--bg-dark);
+    padding: var(--space-lg) var(--space-xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 1.35rem;
+    text-decoration: none;
+    border: none;
+}
+.nav-logo:hover {
+    background: none;
+}
+
+.site-nav a {
+    display: flex;
+    gap: var(--space-lg);
+    list-style: none;
+    align-items: center;
+    color: var(--text-light);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    padding: var(--space-xs) var(--space-sm);
+    transition: color var(--transition-fast);
+}
+
+.site-nav a:hover {
+    color: var(--accent);
+    background-color: transparent;
+}
 
 .logout-form {
-    display: inline;
+    display: inline-flex;
     margin: 0;
+    padding: 0;
+    align-items: center;
 }
 
 .nav-button {
     background: none;
     border: none;
+    padding: var(--space-xs) var(--space-sm);
+    margin: 0;
+    color: var(--text-light);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.nav-button:hover {
+    color: var(--accent);
+    background: none;
+}
+
+
+/* ==========================================================================
+   Sticky Footer
+   ========================================================================== */
+
+.site-footer {
+    background-color: var(--bg-dark);
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-size: inherit;
+    text-align: center;
+    padding: var(--space-xl) var(--space-md);
+    margin-top: auto;
+    width: 100%;
+}
+
+.site-footer a {
+    color: var(--accent);
+    border-bottom: 1px solid var(--primary);
+}
+.site-footer a:hover {
+    background: none;
+    color: var(--primary);
+}
+
+
+/* ==========================================================================
+   Structural Core Elements
+   ========================================================================== */
+
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding: var(--space-lg);
+    flex: 1;
+}
+
+.card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Primary Form/Action Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.btn:hover {
+    background-color: var(--secondary);
+    color: var(--accent);
+}
+
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+form p {
+    margin-bottom: var(--space-md);
+}
+
+form label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: var(--space-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form input[type="search"],
+form textarea,
+form select {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    color: var(--text-main);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(146, 183, 117, 0.2);
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 7rem;
+}
+
+/* Form submit buttons — behave like paragraph links */
+form button[type="submit"],
+form input[type="submit"] {
+    background: none;
+    border: none;
     padding: 0;
     margin: 0;
-    color: inherit;
-    font: inherit;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary);
     cursor: pointer;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    display: inline;
+}
+
+form button[type="submit"]:hover,
+form input[type="submit"]:hover {
+    color: var(--secondary);
+    background: none;
+    text-decoration: none;
+}
+
+
+/* ==========================================================================
+   Tables — site-wide
+   ========================================================================== */
+
+table {
+    width: 66.67%;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+thead {
+    background-color: var(--primary);
+}
+
+thead th {
+    color: var(--secondary);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: var(--space-sm) var(--space-md);
+    text-align: left;
+    border-bottom: 2px solid var(--secondary);
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color var(--transition-fast);
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: rgba(146, 183, 117, 0.08);
+}
+
+tbody td {
+    padding: var(--space-sm) var(--space-md);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+tfoot td {
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--secondary);
+    border-top: 2px solid var(--border-color);
 }
