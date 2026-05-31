@@ -1,10 +1,10 @@
 {
   "name": "django-hex-minesweeper-ts",
   "version": "1.0.0",
-  "description": "TypeScript compiler pipeline for Django Leaderboards App",
+  "description": "TypeScript compiler pipeline for Django Hex-Sweeper App",
   "main": "index.js",
   "scripts": {
-    "check": "tsc --noEmit --strict true",
+    "check": "tsc --noEmit",
     "build": "npm run check && tsc  --build",
     "watch": "npm run check && tsc  --watch"
   },

@@ -1,31 +1,26 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "alwaysStrict": true,
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "module": "ESNext",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "removeComments": false,
-
-    "strict": true,
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
+    "noImplicitReturns": true,
     "noImplicitThis": true,
-    "alwaysStrict": true,
-
+    "noEmitOnError": true,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-
-    "noEmitOnError": true
+    "removeComments": false,
+    "sourceMap": true,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "target": "ES2022"
   },
-
   "files": [],
-
   "references": [
     { "path": "game/static/game/tsconfig.game.json" },
     { "path": "leaderboards/static/leaderboards/tsconfig.leaderboards.json" }
