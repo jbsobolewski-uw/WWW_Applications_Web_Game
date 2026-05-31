@@ -1,6 +1,7 @@
 {
   "name": "hex-minesweeper",
   "version": "1.0.0",
+  "type": "module",
   "description": "TypeScript compiler pipeline for Hex-Sweeper App",
   "scripts": {
     "check": "tsc --noEmit",

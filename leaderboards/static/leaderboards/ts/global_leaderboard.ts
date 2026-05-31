@@ -34,7 +34,7 @@ async function loadGlobalLeaderboard(gameSlug: string, difficulty: number, conta
             <tr>
                 <td>#${record.rank}</td>
                 <td><strong>${record.username}</strong></td>
-                <td>${record.time.toFixed(2)}s</td>
+                <td>${record.time.toFixed(2)}</td>
                 <td>${record.date}</td>
             </tr>
         `;

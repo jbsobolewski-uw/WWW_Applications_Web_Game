@@ -20,14 +20,14 @@ async function loadPersonalRecords(gameSlug: string, containerId: string): Promi
         return;
     }
 
-    const headers = "<th>Difficulty (Radius)</th><th>Your Best Time</th>";
+    const headers = "<th>Difficulty</th><th>Your Best Time</th>";
     let rows = "";
 
     data.personal_bests.forEach((record: { difficulty: any; best_time: number; }) => {
         rows += `
             <tr>
                 <td>Level ${record.difficulty}</td>
-                <td>${record.best_time.toFixed(2)}s</td>
+                <td>${record.best_time.toFixed(2)}</td>
             </tr>
         `;
     });
