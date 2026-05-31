@@ -1,55 +1,33 @@
 {
   "compilerOptions": {
-    /* Target & Libraries (Promise & Async/Await Support) */
     "target": "ES2022",
-    /* Modern JS target for browser support */
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2022"
-    ],
-    /* Injects Promise, Async/Await, and modern DOM definitions */
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "module": "ESNext",
-    /* Standard modern module layout */
     "moduleResolution": "node",
-    /* Output Directories */
-    "rootDir": "./leaderboards/static/leaderboards/ts",
-    /* Where your TS files live */
-    "outDir": "./leaderboards/static/leaderboards/js",
-    /* Where compiled JS goes */
-    "removeComments": false,
     "sourceMap": true,
-    /* Helps you debug TS directly in the browser console */
+    "removeComments": false,
 
-    /* Strictness & Good-Practice Flags */
     "strict": true,
-    /* Enables all strict type-checking options */
     "noImplicitAny": true,
-    /* Force explicit typing instead of falling back to 'any' */
     "strictNullChecks": true,
-    /* Eliminates 'undefined is not a function' errors */
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    /* Additional Warning & Clean Code Flags */
-    "noUnusedLocals": true,
-    /* Error on unused variables */
-    "noUnusedParameters": true,
-    /* Error on unused function parameters */
-    "noImplicitReturns": true,
-    /* Error if a code path in a function doesn't return a value */
-    "noFallthroughCasesInSwitch": true,
-    /* Error on missing break/return statements in switches */
-    "noUncheckedIndexedAccess": true,
-    /* Safer array/objects lookup checking */
 
-    /* The Guardrail */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+
     "noEmitOnError": true
-    /* DO NOT compile/emit JS if there is any type mismatch */
   },
-  "include": [
-    "leaderboards/static/leaderboards/ts/**/*"
-    /* Watch and compile everything in this folder */
+
+  "files": [],
+
+  "references": [
+    { "path": "game/static/game/tsconfig.game.json" },
+    { "path": "leaderboards/static/leaderboards/tsconfig.leaderboards.json" }
   ]
 }

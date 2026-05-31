@@ -4,9 +4,9 @@
   "description": "TypeScript compiler pipeline for Django Leaderboards App",
   "main": "index.js",
   "scripts": {
-    "check": "tsc --noEmit",
-    "build": "npm run check && tsc",
-    "watch": "tsc --noEmit --watch"
+    "check": "tsc --noEmit --strict true",
+    "build": "npm run check && tsc  --build",
+    "watch": "npm run check && tsc  --watch"
   },
   "devDependencies": {
     "typescript": "^5.0.0"
