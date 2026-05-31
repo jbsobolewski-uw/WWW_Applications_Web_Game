@@ -1,19 +1,50 @@
 /* leaderboards.css */
 
-.leaderboard-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+/* ==========================================================================
+   1. GŁÓWNE KONTENERY (WRAPPERY)
+   To one teraz odpowiadają za szerokość 2/3 i centrowanie całej sekcji na stronie.
+   ========================================================================== */
+.leaderboard-wrapper,
+.personal-records-wrapper {
     width: 66.67%;
     margin-left: auto;
     margin-right: auto;
     margin-top: var(--space-xl);
-    margin-bottom: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
+/* ==========================================================================
+   2. ELEMENTY NAGŁÓWKOWE (Wyrównane do lewej krawędzi wrappera)
+   ========================================================================== */
+
+/* Nagłówek i selektor na stronie głównej (index.html) */
+.leaderboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+    /* Usunięto sztywne szerokości i marginesy - kontrolowane przez rodzica */
+}
+
+/* Tytuł sekcji na stronie profilu (profile.html) */
+.personal-records-wrapper h3 {
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: var(--space-md); /* Taki sam odstęp od tabeli jak w .leaderboard-header */
+    font-family: var(--font-main);
+    color: var(--text-main);
+}
+
+/* ==========================================================================
+   3. SELEKTOR POZIOMU TRUDNOŚCI (Dropdown)
+   ========================================================================== */
 .difficulty-selector {
     display: flex;
     align-items: center;
+    align-content: center;
+    align-self: center;
     gap: var(--space-sm);
     font-family: var(--font-mono);
     font-size: 0.9rem;
@@ -24,7 +55,7 @@
 .difficulty-selector label {
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    font-size: 0.8rem;
+    font-size: 1.35rem;
 }
 
 .difficulty-selector select {
@@ -51,19 +82,29 @@
     box-shadow: 0 0 0 3px rgba(146, 183, 117, 0.2);
 }
 
-/* Empty State */
+/* ==========================================================================
+   4. TABELE (Wstrzykiwane przez TypeScript)
+   Gwarancja, że tabela zawsze zajmie 100% szerokości swojego kontenera.
+   ========================================================================== */
+.leaderboard-wrapper table,
+.personal-records-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* ==========================================================================
+   5. STAN PUSTEJ TABELI (Empty State) i Linki
+   ========================================================================== */
 .empty-leaderboard {
     text-align: center;
     padding: var(--space-xl) 0;
     background-color: var(--bg-surface);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
-    width: 66.67%;
-    margin-left: auto;
-    margin-right: auto;
     margin-top: var(--space-md);
     font-family: var(--font-main);
     color: var(--text-main);
+    /* Usunięto szerokość 66.67% i marginesy automatyczne - kontrolowane przez rodzica */
 }
 
 .play-now-link {
@@ -79,11 +120,4 @@
 .play-now-link:hover {
     color: var(--secondary);
     background: none;
-}
-
-/* Leaderboard wrapper aligns the table container */
-.leaderboard-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
 }

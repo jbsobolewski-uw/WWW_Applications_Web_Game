@@ -2,9 +2,9 @@
 
 :root {
     /* Color Palette */
-    --primary: #92b775;
+    --primary: rgb(146 183 117);
     --secondary: #133215;
-    --accent: #f3e8d3;
+    --accent: #ede9e3;
 
     /* Functional Inversions */
     --bg-main: var(--accent);

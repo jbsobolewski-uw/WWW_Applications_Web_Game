@@ -48,12 +48,12 @@ export const DIFFICULTY_CONFIG: Record<number, DifficultyConfig> = {
 export const HEX_SIZE = 28; // px center-to-vertex
 
 export const COLORS = {
-    cellDefault:  '#f3e8d3',
+    cellDefault:  '#ede9e3',
     cellHover:    '#e8dbc4',
     cellRevealed: '#ffffff',
     cellMine:     '#c0392b',
     cellFlag:     '#92b775',
-    border:       '#d1c7b2',
+    border:       '#ede9e3',
     borderDark:   '#133215',
     text:         '#133215',
     // index 0 unused; indices 1–8 map to adjacentMines values
