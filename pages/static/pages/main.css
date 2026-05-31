@@ -16,13 +16,12 @@ h1 { font-size: 2.25rem; }
 h2 { font-size: 1.75rem; }
 h3 { font-size: 1.35rem; }
 
-.container, div p {
+.container, p, .leaderboard-wrapper {
     margin-bottom: var(--space-md);
     font-size: 1rem;
 }
 
-/* Links inside general text paragraphs */
-.container, div p a {
+main a {
     color: var(--primary);
     text-decoration: none;
     font-weight: 600;
@@ -30,13 +29,13 @@ h3 { font-size: 1.35rem; }
     transition: color var(--transition-fast);
 }
 
-.container, div p a:hover {
+main a:hover {
+    background-color: transparent;
     color: var(--secondary);
 }
 
 /* No visited state change */
-.container, div p a:visited {
-    color: var(--primary);
+main a:visited {
     text-decoration: none;
 }
 
@@ -84,14 +83,14 @@ h3 { font-size: 1.35rem; }
     background-color: transparent;
 }
 
-.logout-form {
+.site-nav .logout-form {
     display: inline-flex;
     margin: 0;
     padding: 0;
     align-items: center;
 }
 
-.nav-button {
+.site-nav .logout-form .nav-button {
     background: none;
     border: none;
     padding: var(--space-xs) var(--space-sm);
@@ -104,7 +103,7 @@ h3 { font-size: 1.35rem; }
     transition: color var(--transition-fast);
 }
 
-.nav-button:hover {
+.site-nav .logout-form .nav-button:hover {
     color: var(--accent);
     background: none;
 }
@@ -123,6 +122,7 @@ h3 { font-size: 1.35rem; }
     padding: var(--space-xl) var(--space-md);
     margin-top: auto;
     width: 100%;
+    margin-bottom: var(--space-xs) ;
 }
 
 .site-footer a {
