@@ -2,4 +2,5 @@
 /node_modules/
 **/js/
 **/migrations/
+*.tsbuildinfo
 /temp.py
