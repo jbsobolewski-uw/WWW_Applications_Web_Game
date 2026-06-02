@@ -15,7 +15,78 @@ import {
     hexCorners,
     canvasSizeForRings,
 } from './hexsweeper_utils.js';
+
 import { submitRecord } from './stats_api.js';
+
+// ---------------------------------------------------------------------------
+// XyzzyDetector — classic easter egg
+//
+// Typing "xyzzy" activates a 1×1 pixel indicator in the top-left corner
+// of the viewport.  While active it shows green when the hovered hex is
+// safe, red when it contains a mine, and is invisible when no hex is
+// hovered.  Matches the behaviour of the original Windows Minesweeper
+// easter egg (white = safe, black = mine) with the site colour palette.
+// ---------------------------------------------------------------------------
+
+class XyzzyDetector {
+    private static readonly SEQUENCE = 'xyzzy';
+    private _buffer: string = '';
+    private _active: boolean = false;
+    private readonly _indicator: HTMLDivElement;
+
+    constructor() {
+        this._indicator = this._createIndicator();
+        document.addEventListener('keydown', (e) => { this._onKey(e); });
+    }
+
+    private _createIndicator(): HTMLDivElement {
+        const el = document.createElement('div');
+        el.id = 'xyzzy-indicator';
+        Object.assign(el.style, {
+            position:        'fixed',
+            top:             '0',
+            left:            '0',
+            width:           '2px',
+            height:          '2px',
+            zIndex:          '9999',
+            pointerEvents:   'none',
+            backgroundColor: 'transparent',
+        });
+        document.body.appendChild(el);
+        return el;
+    }
+
+    private _onKey(e: KeyboardEvent): void {
+        // Ignore keystrokes that are modified or inside inputs
+        if (e.ctrlKey || e.altKey || e.metaKey) return;
+        const tag = (e.target as HTMLElement).tagName.toLowerCase();
+        if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
+
+        this._buffer = (this._buffer + e.key.toLowerCase()).slice(-XyzzyDetector.SEQUENCE.length);
+        if (this._buffer === XyzzyDetector.SEQUENCE) {
+            this._active = true;
+            // Update immediately to transparent (no cell hovered yet)
+            this._setColor(null);
+        }
+    }
+
+    /** Call on every mousemove / mouseleave with the hovered cell or null. */
+    update(cell: Cell | null): void {
+        if (!this._active) return;
+        this._setColor(cell);
+    }
+
+    private _setColor(cell: Cell | null): void {
+        if (cell === null || !this._active) {
+            this._indicator.style.backgroundColor = 'transparent';
+            return;
+        }
+        // Green = safe, Red = mine — using the site palette
+        this._indicator.style.backgroundColor = cell.mine ? '#c0392b' : '#92b775';
+    }
+
+    get active(): boolean { return this._active; }
+}
 
 // ---------------------------------------------------------------------------
 // HexMinesweeper — game logic
@@ -240,6 +311,11 @@ class HexRenderer {
         return pixelToHex(px, py, this.size, this.cx, this.cy);
     }
 
+    getHoveredCell(): Cell | null {
+        if (this.hoveredKey === null) return null;
+        return this.game.cells.get(this.hoveredKey) ?? null;
+    }
+
     private _drawHex(q: number, r: number, fill: string, stroke: string, strokeWidth: number): void {
         const center: Point = hexToPixel(q, r, this.size, this.cx, this.cy);
         const corners = hexCorners(center.x, center.y, this.size - 1.5);
@@ -285,10 +361,9 @@ class GameController {
     private game!: HexMinesweeper;
     private renderer!: HexRenderer;
     private timerHandle: ReturnType<typeof setInterval> | null = null;
-
-    // Track whether we have already submitted the record for the current game
-    // so a re-render triggered after end state doesn't double-submit.
     private _recordSubmitted: boolean = false;
+
+    private readonly xyzzy: XyzzyDetector;
 
     constructor() {
         this.canvas      = this._getEl<HTMLCanvasElement>('hex-canvas');
@@ -298,6 +373,8 @@ class GameController {
         this.statMines   = this._getEl<HTMLElement>('stat-mines');
         this.statFlagged = this._getEl<HTMLElement>('stat-flagged');
         this.statTime    = this._getEl<HTMLElement>('stat-time');
+
+        this.xyzzy = new XyzzyDetector();
 
         const params = new URLSearchParams(window.location.search);
         const urlDiff = parseInt(params.get('difficulty') ?? '', 10);
@@ -320,6 +397,7 @@ class GameController {
         this.canvas.addEventListener('mouseleave',  ()  => {
             this.renderer.hoveredKey = null;
             this.renderer.render();
+            this.xyzzy.update(null);
         });
 
         this.startGame();
@@ -339,6 +417,7 @@ class GameController {
         this._updateStats();
         this.statusEl.textContent = '';
         this.statusEl.className = '';
+        this.xyzzy.update(null);
 
         this.timerHandle = setInterval(() => {
             this.statTime.textContent = String(this.game.getElapsed());
@@ -357,6 +436,8 @@ class GameController {
         this.renderer.render();
         this._updateStats();
         this._checkEndState();
+        // After reveal, the hovered cell's mine state may now be known — update indicator
+        this.xyzzy.update(this.renderer.getHoveredCell());
     }
 
     private _onRightClick(e: MouseEvent): void {
@@ -377,6 +458,7 @@ class GameController {
             this.renderer.hoveredKey = this.game.cells.has(key) ? key : null;
             this.renderer.render();
         }
+        this.xyzzy.update(this.renderer.getHoveredCell());
     }
 
     private _canvasPos(e: MouseEvent): Point {
@@ -406,8 +488,6 @@ class GameController {
             this.statusEl.className = 'lost';
         }
 
-        // Submit exactly once per finished game, only if the game was actually
-        // started (i.e. the player made at least one move).
         if (this.game.started && !this._recordSubmitted) {
             this._recordSubmitted = true;
             void submitRecord({
