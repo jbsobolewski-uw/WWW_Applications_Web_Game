@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,6 +29,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+SITE_ID = 1
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -35,11 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'debug_toolbar',
     'accounts',
     'game',
     'leaderboards',
     'pages',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
 ]
 
 MIDDLEWARE = [
@@ -51,20 +59,32 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",  # username/password
-    # "allauth.account.auth_backends.AuthenticationBackend",  # social login
+    'django.contrib.auth.backends.ModelBackend',  # username/password
+    'allauth.account.auth_backends.AuthenticationBackend',  # social login
 ]
 
-LOGIN_URL = "/accounts/login/"
-LOGIN_REDIRECT_URL = "/accounts/profile/"
-LOGOUT_REDIRECT_URL = "/"
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        "APP": {
+            "client_id": os.environ.get("GITHUB_CLIENT_ID", ""),
+            "secret":    os.environ.get("GITHUB_CLIENT_SECRET", ""),
+            "key":       "",
+        },
+        "SCOPE": ["read:user", "user:email"],
+    }
+}
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/accounts/profile/'
+LOGOUT_REDIRECT_URL = '/'
 
 ROOT_URLCONF = 'web_game.urls'
 INTERNAL_IPS = [
-    "127.0.0.1",
+    '127.0.0.1',
 ]
 
 TEMPLATES = [

@@ -1,7 +1,7 @@
 # accounts/urls.py
 
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import include, path
 
 from . import views
 
@@ -16,4 +16,5 @@ urlpatterns = [
          name="logout"),
     path("profile/", views.profile, name="profile"),
     path('register/', views.register, name='register'),
+    path("social/", include("allauth.urls")),
 ]
